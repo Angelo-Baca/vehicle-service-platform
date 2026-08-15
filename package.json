@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A TypeScript REST API for managing vehicle service operations and maintenance records",
   "main": "dist/server.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,5 +15,13 @@
     "vehicle-maintenance"
   ],
   "author": "Angelo Baca",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.2.0",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
 }
