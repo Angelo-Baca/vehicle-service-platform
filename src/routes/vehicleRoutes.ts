@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getVehicles, getVehicleByID } from "../controllers/vehicleController.js";
+import { getVehicles, getVehicleByID, updateVehicle, deleteVehicle } from "../controllers/vehicleController.js";
 import { createVehicle } from "../controllers/vehicleController.js";
 
 
@@ -10,5 +10,9 @@ router.get("/", getVehicles);
 router.get("/:id", getVehicleByID);
 
 router.post("/", createVehicle);
+
+router.put("/:id", updateVehicle);
+
+router.delete("/:id", deleteVehicle);
 
 export default router;

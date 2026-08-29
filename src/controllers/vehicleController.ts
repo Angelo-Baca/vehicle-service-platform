@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 
+// Main GET method
 export const getVehicles = (
     req: Request, 
     res: Response
@@ -9,7 +10,7 @@ export const getVehicles = (
     });
 };
 
-
+// specific GET method
 export const getVehicleByID = (
     req: Request, 
     res: Response
@@ -20,6 +21,7 @@ export const getVehicleByID = (
     });
 };
 
+// POST Method
 export const createVehicle = (
     req: Request,
     res: Response
@@ -27,5 +29,28 @@ export const createVehicle = (
     res.json({
         message: "Vehicle received",
         vehicle: req.body
+    });
+};
+
+// PUT Method
+export const updateVehicle = (
+    req: Request,
+    res: Response
+) => {
+    res.json({
+        message: "Vehicle update received",
+        vehicleId: req.params.id,
+        updates: req.body
+    });
+};
+
+// Delete Method
+export const deleteVehicle = (
+    req: Request,
+    res: Response
+) => {
+    res.json({
+        message: "Vehicle delete received",
+        vehicleId: req.params.id
     });
 };
