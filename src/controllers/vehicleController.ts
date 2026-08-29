@@ -1,6 +1,16 @@
 import type { Request, Response } from "express";
 
-const getVehicleByID = (
+export const getVehicles = (
+    req: Request, 
+    res: Response
+) => {
+    res.json({
+        message: "Vehicles route is working"
+    });
+};
+
+
+export const getVehicleByID = (
     req: Request, 
     res: Response
 ) => {
@@ -10,4 +20,12 @@ const getVehicleByID = (
     });
 };
 
-export default getVehicleByID;
+export const createVehicle = (
+    req: Request,
+    res: Response
+) => {
+    res.json({
+        message: "Vehicle received",
+        vehicle: req.body
+    });
+};

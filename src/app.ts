@@ -6,6 +6,8 @@ import vehicleRoutes from "./routes/vehicleRoutes.js";
 // should return an 'app' object 
 const app = express();
 
+app.use(express.json());
+
 app.get("/", (req, res) => {
     res.send("Vehicle Service Platform API is running");
 });

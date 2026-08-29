@@ -1,14 +1,14 @@
 import { Router } from "express";
-import getVehicleByID from "../controllers/vehicleController.js";
+import { getVehicles, getVehicleByID } from "../controllers/vehicleController.js";
+import { createVehicle } from "../controllers/vehicleController.js";
+
 
 const router = Router();
 
-router.get("/" , (req, res) => {
-    res.json({
-        message: "Vehicles route is working" 
-    })
-});
+router.get("/", getVehicles);
 
 router.get("/:id", getVehicleByID);
+
+router.post("/", createVehicle);
 
 export default router;
