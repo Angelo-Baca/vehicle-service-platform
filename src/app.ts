@@ -1,4 +1,6 @@
 import express from "express";
+import healthRoutes from "./routes/healthRoutes.js";
+import vehicleRoutes from "./routes/vehicleRoutes.js";
 
 // create app and have it call the express function.
 // should return an 'app' object 
@@ -8,11 +10,7 @@ app.get("/", (req, res) => {
     res.send("Vehicle Service Platform API is running");
 });
 
-app.get("/health", (req, res) => {
-    res.json({
-        status: "ok", 
-        service: "vehicle-service-platform"
-    });
-});
+app.use("/health", healthRoutes);
+app.use("/vehicles", vehicleRoutes);
 
 export default app;
