@@ -1,6 +1,3 @@
-import { error } from "node:console";
-import { json } from "node:stream/consumers";
-
 const vehicles = [
     {
         id: 1,
