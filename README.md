@@ -1,77 +1,131 @@
 # Vehicle Service Platform
 
-A backend REST API built with TypeScript, Node.js, and Express for managing vehicle service data.
+A full-stack vehicle management application built with TypeScript, Node.js, Express, PostgreSQL, and a Vite-powered frontend.
 
-This project is being developed as a portfolio application to demonstrate backend software engineering concepts including RESTful API design, layered architecture, type-safe development, CRUD operations, validation, persistence, authentication, testing, security, and performance optimization.
+Users can view, add, edit, and delete vehicles through an interactive dashboard. Vehicle records are stored in PostgreSQL and persist across application restarts.
+
+This project demonstrates practical software engineering concepts including RESTful API development, layered architecture, database integration, frontend/backend communication, and version control.
+
+## Application Preview
+
+![Vehicle Service Platform Dashboard](docs/screenshots/dashboard-overview.jpg)
+
+The dashboard provides an interactive interface for managing vehicle records without manually sending API requests.
+
+**Project status:** Working locally. Public deployment is planned.
 
 ## Current Status
 
-The project currently provides a working Express API with vehicle CRUD operations backed by temporary in-memory storage.
+**Completed: Full-stack application with PostgreSQL persistence.**
 
 Implemented functionality includes:
 
-* TypeScript-based Node.js application
-* Express server and modular application structure
-* Health-check endpoint
-* Dedicated vehicle router
-* Controller and service layers
-* Create, read, update, and delete vehicle operations
-* Route parameter handling
-* JSON request-body parsing
-* HTTP status handling for successful, invalid, and missing requests
-* TypeScript compilation and development watch workflow
+- TypeScript-based Node.js and Express backend
+- Modular application structure
+- RESTful vehicle API
+- Controller and service layers
+- PostgreSQL database integration
+- Persistent vehicle records
+- Database application role and permissions
+- Environment-based database configuration
+- Interactive TypeScript frontend
+- Vehicle creation, retrieval, updating, and deletion
+- Health-check endpoint
+- HTTP status handling
+- Successful backend and frontend production builds
+- Manual API testing with Postman
+- Frontend CRUD functionality verified
 
-Vehicle data is currently stored in memory and resets whenever the server restarts. Persistent database storage is planned for a later development phase.
+Additional validation, automated testing, and deployment infrastructure are planned.
+
+## Technology Stack
+
+| Category | Technologies |
+|---|---|
+| Frontend | TypeScript, HTML, CSS, Vite |
+| Backend | Node.js, TypeScript, Express |
+| Database | PostgreSQL |
+| API | REST, JSON, HTTP |
+| Testing | Postman (manual testing) |
+| Development | npm, Git, GitHub |
+| Planned | Docker, GitHub Actions, Cloud Deployment |
 
 ## Architecture
 
-The current application follows a layered structure:
+The application follows a layered architecture:
 
 ```text
-HTTP Request
-     |
-     v
-Express Application
-     |
-     v
-Router
-     |
-     v
-Controller
-     |
-     v
-Service
-     |
-     v
-In-Memory Data
+                  User
+                   |
+                   v
+           Frontend Dashboard
+                   |
+                   v
+             Express REST API
+                   |
+                   v
+                 Router
+                   |
+                   v
+               Controller
+                   |
+                   v
+                Service
+                   |
+                   v
+              PostgreSQL
 ```
 
 Each layer has a separate responsibility:
 
-* **Application** — configures Express and mounts API routes.
-* **Router** — maps HTTP methods and paths to controller functions.
-* **Controller** — handles HTTP requests, responses, status codes, and request data.
-* **Service** — contains vehicle-related application logic and data operations.
-* **Data layer** — currently an in-memory vehicle collection; persistent storage will replace this in a later phase.
+- **Frontend:** Displays vehicle records and provides controls for managing them.
+- **Express application:** Configures the backend and registers API routes.
+- **Router:** Maps HTTP methods and paths to controller functions.
+- **Controller:** Processes requests and returns HTTP responses.
+- **Service:** Performs vehicle-related operations and interacts with the database.
+- **Database:** Stores vehicle information persistently.
+
+## Features
+
+### Vehicle Management
+
+Users can:
+
+- View all vehicles
+- Retrieve an individual vehicle by ID through the API
+- Add a vehicle
+- Update an existing vehicle
+- Delete a vehicle
+- Refresh the dashboard to retrieve current records
+
+### PostgreSQL Persistence
+
+Vehicle records are stored in PostgreSQL rather than temporary application memory.
+
+Records remain available after the backend server restarts.
+
+### Interactive Dashboard
+
+The frontend provides a dark-themed vehicle management interface connected to the Express API.
 
 ## API Endpoints
 
 ### General
 
-| Method | Endpoint  | Description                        |
-| ------ | --------- | ---------------------------------- |
-| GET    | `/`       | Confirms that the API is running   |
-| GET    | `/health` | Returns service health information |
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/` | Confirm the API is running |
+| GET | `/health` | Retrieve service health information |
 
 ### Vehicles
 
-| Method | Endpoint        | Description                |
-| ------ | --------------- | -------------------------- |
-| GET    | `/vehicles`     | Retrieve all vehicles      |
-| GET    | `/vehicles/:id` | Retrieve a vehicle by ID   |
-| POST   | `/vehicles`     | Create a vehicle           |
-| PUT    | `/vehicles/:id` | Update an existing vehicle |
-| DELETE | `/vehicles/:id` | Delete an existing vehicle |
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/vehicles` | Retrieve all vehicles |
+| GET | `/vehicles/:id` | Retrieve a vehicle by ID |
+| POST | `/vehicles` | Create a vehicle |
+| PUT | `/vehicles/:id` | Update a vehicle |
+| DELETE | `/vehicles/:id` | Delete a vehicle |
 
 ## Example Vehicle
 
@@ -112,36 +166,57 @@ Example successful response:
 }
 ```
 
+The vehicle ID is generated by PostgreSQL and depends on existing database records.
+
 ## HTTP Responses
 
-The API currently uses HTTP status codes including:
+The API currently uses status codes including:
 
-* `200 OK` — successful retrieval, update, or deletion
-* `201 Created` — vehicle successfully created
-* `400 Bad Request` — invalid vehicle ID
-* `404 Not Found` — requested vehicle does not exist
+- `200 OK` — successful retrieval, update, or deletion
+- `201 Created` — vehicle successfully created
+- `400 Bad Request` — invalid vehicle ID
+- `404 Not Found` — requested vehicle does not exist
 
-Additional request validation will be added as the project develops.
+Comprehensive request-body validation and standardized error handling are planned for Phase 4.
 
 ## Project Structure
 
 ```text
 vehicle-service-platform/
 |
+|-- database/
+|   |-- schema.sql
+|   |-- permissions.sql
+|   |-- README.md
+|   `-- VALIDATION_NOTES.md
+|
+|-- docs/
+|   `-- screenshots/
+|       `-- dashboard-overview.jpg
+|
+|-- frontend/
+|   |-- src/
+|   |   |-- api.ts
+|   |   |-- main.ts
+|   |   `-- styles.css
+|   |-- index.html
+|   |-- package.json
+|   `-- vite.config.ts
+|
 |-- src/
+|   |-- config/
+|   |   `-- database.ts
 |   |-- controllers/
 |   |   `-- vehicleController.ts
-|   |
 |   |-- routes/
 |   |   |-- healthRoutes.ts
 |   |   `-- vehicleRoutes.ts
-|   |
 |   |-- services/
 |   |   `-- vehicleService.ts
-|   |
 |   |-- app.ts
 |   `-- server.ts
 |
+|-- .env.example
 |-- package.json
 |-- package-lock.json
 |-- tsconfig.json
@@ -150,75 +225,72 @@ vehicle-service-platform/
 
 ## Running the Project Locally
 
-### Requirements
+### Prerequisites
 
-* Node.js
-* npm
+- Node.js and npm
+- PostgreSQL
+- Git
 
-### Installation
+### 1. Clone the Repository
 
-Clone the repository and install dependencies:
+```bash
+git clone https://github.com/Angelo-Baca/vehicle-service-platform.git
+cd vehicle-service-platform
+```
+
+### 2. Install Backend Dependencies
 
 ```bash
 npm install
 ```
 
-Start the development server:
+### 3. Configure PostgreSQL
+
+Create the database, initialize the schema, and configure the application role.
+
+Follow the [PostgreSQL Setup Instructions](database/README.md).
+
+Create a local `.env` file using `.env.example` as a reference.
+
+Never commit database credentials to Git.
+
+### 4. Start the Backend
 
 ```bash
 npm run dev
 ```
 
-The API runs locally on:
+The API runs locally at:
 
-```text
-http://localhost:3000
+`http://localhost:3000`
+
+### 5. Install Frontend Dependencies
+
+Open a second terminal:
+
+```bash
+cd frontend
+npm install
 ```
 
-### Production Build
+### 6. Start the Frontend
 
-Compile the TypeScript project:
+```bash
+npm run dev
+```
+
+Open the local address displayed by Vite, normally:
+
+`http://localhost:5173`
+
+The frontend communicates with the backend running on port 3000.
+
+### Production Builds
+
+Backend:
 
 ```bash
 npm run build
 ```
 
-Run the compiled application:
-
-```bash
-npm start
-```
-
-## Technology
-
-* TypeScript
-* Node.js
-* Express
-* npm
-* Git
-
-## Development Roadmap
-
-The current in-memory CRUD implementation establishes the API architecture that later phases will build upon.
-
-Planned development includes:
-
-* Persistent database integration
-* Repository/data-access layer
-* Vehicle and service-record relationships
-* Request validation
-* Environment-based configuration
-* Authentication and authorization
-* Secure password handling
-* Automated unit and integration testing
-* Structured error handling
-* Logging and request tracing
-* Query-performance profiling and optimization
-* API documentation
-* CI workflow
-
-## Purpose
-
-Vehicle Service Platform is being developed as a progressively enhanced backend engineering project. Rather than implementing all infrastructure at once, each development phase introduces additional production-oriented concerns while preserving and improving the existing API.
-
-The project is intended to demonstrate both a working application and the engineering process of evolving a small REST API toward a more secure, testable, maintainable, and production-oriented service.
+Frontend
