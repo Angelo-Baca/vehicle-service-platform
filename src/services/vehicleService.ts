@@ -1,80 +1,67 @@
-const vehicles = [
-    {
-        id: 1,
-        make: "Toyota",
-        model: "Tacoma",
-        year: 2004
-    },
-     {
-        id: 2,
-        make: "Honda",
-        model: "Civic",
-        year: 2022
-    },
-];
 
-export const getAllVehicles = () => {
-    return vehicles;
+import { pool } from "../config/database.js";
+
+// GET all vehicles
+export const getAllVehicles = async () => {
+    const result = await pool.query(
+        "SELECT id, make, model, year FROM vehicles ORDER BY id"
+    );
+
+    return result.rows;
 };
 
-export const getVehicleById = (
-    id: number
-) => {
-    const vehicle = vehicles.find((vehicle) =>
-    {
-        return vehicle.id === id;
-    });
-    return vehicle;
+// GET vehicle by ID
+export const getVehicleById = async (id: number) => {
+    const result = await pool.query(
+        "SELECT id, make, model, year FROM vehicles WHERE id = $1",
+        [id]
+    );
+
+    return result.rows[0];
 };
 
-export const createVehicle = (
+// POST vehicle
+export const createVehicle = async (
     make: string,
     model: string,
     year: number
 ) => {
-   const newVehicle = { 
-    id: vehicles.length + 1,
-    make,
-    model,
-    year
-   };
+    const result = await pool.query(
+        `INSERT INTO vehicles (make, model, year)
+         VALUES ($1, $2, $3)
+         RETURNING id, make, model, year`,
+        [make, model, year]
+    );
 
-   vehicles.push(newVehicle);
-   return newVehicle; 
+    return result.rows[0];
 };
 
-export const updateVehicle = (
+// PUT vehicle
+export const updateVehicle = async (
     id: number,
     make: string,
     model: string,
     year: number
 ) => {
-    const vehicle = getVehicleById(id);
+    const result = await pool.query(
+        `UPDATE vehicles
+         SET make = $1, model = $2, year = $3
+         WHERE id = $4
+         RETURNING id, make, model, year`,
+        [make, model, year, id]
+    );
 
-    if(!vehicle) {
-        return undefined;
-    }
-
-    vehicle.make = make;
-    vehicle.model = model;
-    vehicle.year = year;
-
-    return vehicle;
+    return result.rows[0];
 };
 
-export const deleteVehicle = (
-    id: number
-) => {
-    const index = vehicles.findIndex((vehicles) => {
-        return vehicles.id === id;
-    });
+// DELETE vehicle
+export const deleteVehicle = async (id: number) => {
+    const result = await pool.query(
+        `DELETE FROM vehicles
+         WHERE id = $1
+         RETURNING id, make, model, year`,
+        [id]
+    );
 
-    if(index === -1) {
-        return undefined;
-    }
-    const toBeDeleted = vehicles[index];
-
-    vehicles.splice(index, 1);
-
-    return toBeDeleted;
-}
+    return result.rows[0];
+};
