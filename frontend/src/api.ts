@@ -7,27 +7,50 @@ export type Vehicle = {
 
 export type VehicleInput = Omit<Vehicle, "id">;
 
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+
+
+
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   let response: Response;
+
   try {
-    response = await fetch(path, {
+    response = await fetch(`${API_BASE_URL}${path}`, {
       ...options,
-      headers: { ...(options.body ? { "Content-Type": "application/json" } : {}), ...options.headers },
+      headers: {
+        ...(options.body ? { "Content-Type": "application/json" } : {}),
+        ...options.headers,
+      },
     });
   } catch {
-    throw new Error("Unable to reach the API. Check that Express is running on port 3000.");
+    throw new Error("Unable to reach the API. Check the backend connection.");
   }
+
   const raw = await response.text();
   let payload: unknown = null;
-  try { payload = raw ? JSON.parse(raw) : null; } catch { /* Server may return non-JSON errors */ }
+
+  try {
+    payload = raw ? JSON.parse(raw) : null;
+  } catch {
+    // Server may return non-JSON errors.
+  }
+
   if (!response.ok) {
-    const message = payload && typeof payload === "object" && "message" in payload && typeof payload.message === "string"
-      ? payload.message
-      : `Request failed (HTTP ${response.status}).`;
+    const message =
+      payload &&
+      typeof payload === "object" &&
+      "message" in payload &&
+      typeof payload.message === "string"
+        ? payload.message
+        : `Request failed (HTTP ${response.status}).`;
+
     throw new Error(message);
   }
+
   return payload as T;
 }
+
 
 export async function listVehicles(): Promise<Vehicle[]> {
   // Existing Express controller responds with { message: Vehicle[] }.

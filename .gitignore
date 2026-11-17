@@ -1,4 +1,15 @@
 node_modules/
 dist/
 .env
+.env.*
+!.env.example
 coverage/
+
+# Windows metadata
+desktop.ini
+
+# Generated frontend JavaScript
+/frontend/src/*.js
+/frontend/src/*.js.map
+/frontend/vite.config.js
+/frontend/vite.config.js.map
