@@ -38,6 +38,14 @@ function renderRows() {
   document.querySelector<HTMLElement>("#result-count")!.textContent = `${rows.length} vehicle${rows.length === 1 ? "" : "s"}`;
 }
 
+const environmentLabel = import.meta.env.PROD
+  ? "PRODUCTION"
+  : "DEVELOPMENT";
+
+const locationLabel = import.meta.env.PROD
+  ? "CLOUD DEPLOYMENT"
+  : "LOCAL DEVELOPMENT";
+
 function render() {
   app!.innerHTML = `
     <div class="layout">
@@ -46,10 +54,10 @@ function render() {
         <div class="nav-label">WORKSPACE</div>
         <div class="nav-item active"><span>▦</span> Overview</div>
         <div class="nav-item"><span>▤</span> Vehicle Inventory</div>
-        <div class="sidebar-bottom"><div class="environment"><span class="status-dot"></span> LOCAL DEVELOPMENT</div><small>Backend: Express + PostgreSQL</small><small>Frontend: TypeScript + Vite</small></div>
+        <div class="sidebar-bottom"><div class="environment"><span class="status-dot"></span> ${locationLabel}</div><small>Backend: Express + PostgreSQL</small><small>Frontend: TypeScript + Vite</small></div>
       </aside>
       <main class="main">
-        <header class="topbar"><div class="breadcrumb">Workspace <span>/</span> <strong>Overview</strong></div><div class="top-right"><span class="environment-tag">DEVELOPMENT</span><span class="avatar">VS</span></div></header>
+        <header class="topbar"><div class="breadcrumb">Workspace <span>/</span> <strong>Overview</strong></div><div class="top-right"><span class="environment-tag">${environmentLabel}</span><span class="avatar">VS</span></div></header>
         <div class="content">
           <div class="eyebrow">FLEET MANAGEMENT <span class="eyebrow-line"></span> OPERATIONS</div>
           <div class="heading-row"><div><h1>Vehicle overview<span class="blue-period">.</span></h1><p class="subtitle">A central place to manage your vehicle inventory.</p></div><button class="primary" id="add-vehicle"><span>＋</span> Add vehicle</button></div>
